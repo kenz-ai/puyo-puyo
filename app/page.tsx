@@ -5,13 +5,17 @@ import GameBoard from '@/components/game/GameBoard';
 import NextPreview from '@/components/game/NextPreview';
 import ScorePanel from '@/components/game/ScorePanel';
 import GameOverlay from '@/components/game/GameOverlay';
+import PauseOverlay from '@/components/game/PauseOverlay';
+import TouchControls from '@/components/game/TouchControls';
 
 export default function GamePage() {
   const { state, dispatch } = useGameLoop();
 
+  const handlePause = () => dispatch({ type: 'TOGGLE_PAUSE' });
+
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 select-none">
-      {/* Background glow effect */}
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 select-none">
+      {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-900/20 rounded-full blur-3xl" />
       </div>
@@ -26,9 +30,18 @@ export default function GamePage() {
         />
 
         <div className="flex flex-col items-center gap-2">
-          <p className="text-violet-300/60 text-[10px] font-mono tracking-[0.3em] uppercase">
-            Puyo Puyo
-          </p>
+          <div className="flex items-center justify-between w-full px-1">
+            <p className="text-violet-300/60 text-[10px] font-mono tracking-[0.3em] uppercase">
+              Puyo Puyo
+            </p>
+            {/* ポーズボタン（デスクトップ） */}
+            <button
+              onClick={handlePause}
+              className="hidden md:flex text-slate-500 hover:text-violet-300 transition-colors text-xs font-mono"
+            >
+              {state.paused ? '▶ Resume' : '⏸ Pause'}
+            </button>
+          </div>
 
           <div className="relative">
             <GameBoard
@@ -45,7 +58,18 @@ export default function GamePage() {
                 onRestart={() => dispatch({ type: 'RESTART' })}
               />
             )}
+
+            {state.paused && state.phase !== 'gameover' && (
+              <PauseOverlay onResume={handlePause} />
+            )}
           </div>
+
+          {/* モバイルタッチコントロール */}
+          <TouchControls
+            dispatch={dispatch}
+            paused={state.paused}
+            onPause={handlePause}
+          />
         </div>
 
         <NextPreview nextPairs={state.nextPairs} />

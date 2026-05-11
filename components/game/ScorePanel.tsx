@@ -1,3 +1,10 @@
+function chainColor(chain: number): string {
+  if (chain >= 5) return 'text-yellow-300 drop-shadow-[0_0_8px_#fde047]';
+  if (chain >= 4) return 'text-pink-400';
+  if (chain >= 3) return 'text-red-400';
+  return 'text-orange-400';
+}
+
 interface ScorePanelProps {
   score: number;
   highScore: number;
@@ -38,9 +45,12 @@ export default function ScorePanel({ score, highScore, level, chain, totalCleare
       </div>
 
       {chain >= 2 && (
-        <div key={chain} className="animate-chain-pop">
+        <div key={chain} className="animate-chain-pop text-center">
           <Label>Chain</Label>
-          <Value className="text-orange-400 text-3xl">{chain} !!</Value>
+          <Value className={`text-3xl ${chainColor(chain)}`}>{chain}!!</Value>
+          {chain >= 5 && (
+            <p className="text-[9px] font-mono text-yellow-300 tracking-widest animate-pulse">AMAZING</p>
+          )}
         </div>
       )}
 
@@ -51,6 +61,7 @@ export default function ScorePanel({ score, highScore, level, chain, totalCleare
           X Rotate L<br />
           ↓ Soft Drop<br />
           SPC Hard Drop<br />
+          P Pause<br />
           R Restart
         </p>
       </div>

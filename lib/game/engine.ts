@@ -49,6 +49,7 @@ export function createInitialState(): GameState {
     fallTimer: 0,
     clearTimer: 0,
     dropTimer: 0,
+    paused: false,
   };
 }
 
@@ -149,8 +150,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return processClearPhase(state, afterGravity, 1);
     }
 
-    case 'TICK': {
+    case 'TOGGLE_PAUSE': {
       if (state.phase === 'gameover') return state;
+      return { ...state, paused: !state.paused };
+    }
+
+    case 'TICK': {
+      if (state.phase === 'gameover' || state.paused) return state;
 
       if (state.phase === 'falling') {
         const newFallTimer = state.fallTimer + 1;

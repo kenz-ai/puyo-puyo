@@ -31,6 +31,7 @@ export interface GameState {
   fallTimer: number;
   clearTimer: number;
   dropTimer: number;
+  paused: boolean;
 }
 
 export type GameAction =
@@ -41,4 +42,5 @@ export type GameAction =
   | { type: 'SOFT_DROP' }
   | { type: 'HARD_DROP' }
   | { type: 'TICK' }
-  | { type: 'RESTART' };
+  | { type: 'RESTART' }
+  | { type: 'TOGGLE_PAUSE' };

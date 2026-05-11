@@ -27,8 +27,8 @@ export function useGameLoop() {
   const firstPressFrameRef = useRef<Record<string, number>>({});
   const lastDasFrameRef = useRef<Record<string, number>>({});
 
-  const processKeys = useCallback((frame: number, phase: GamePhase) => {
-    if (phase === 'gameover' || phase === 'clearing' || phase === 'dropping') return;
+  const processKeys = useCallback((frame: number, phase: GamePhase, paused: boolean) => {
+    if (paused || phase === 'gameover' || phase === 'clearing' || phase === 'dropping') return;
 
     for (const [key, action] of Object.entries(KEY_TO_ACTION)) {
       if (!keysRef.current.has(key)) {
@@ -61,8 +61,8 @@ export function useGameLoop() {
 
     function loop() {
       frame++;
-      const currentPhase = stateRef.current.phase;
-      processKeys(frame, currentPhase);
+      const { phase, paused } = stateRef.current;
+      processKeys(frame, phase, paused);
       dispatch({ type: 'TICK' });
       rafId = requestAnimationFrame(loop);
     }
@@ -87,6 +87,11 @@ export function useGameLoop() {
       if (e.code === 'Space') {
         e.preventDefault();
         dispatch({ type: 'HARD_DROP' });
+        return;
+      }
+
+      if (e.code === 'KeyP') {
+        dispatch({ type: 'TOGGLE_PAUSE' });
         return;
       }
 
