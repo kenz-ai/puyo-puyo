@@ -11,6 +11,10 @@ interface ScorePanelProps {
   level: number;
   chain: number;
   totalCleared: number;
+  bgmEnabled: boolean;
+  sfxEnabled: boolean;
+  onToggleBgm: () => void;
+  onToggleSfx: () => void;
 }
 
 function Label({ children }: { children: React.ReactNode }) {
@@ -21,7 +25,7 @@ function Value({ children, className = '' }: { children: React.ReactNode; classN
   return <p className={`font-mono font-bold tabular-nums ${className}`}>{children}</p>;
 }
 
-export default function ScorePanel({ score, highScore, level, chain, totalCleared }: ScorePanelProps) {
+export default function ScorePanel({ score, highScore, level, chain, totalCleared, bgmEnabled, sfxEnabled, onToggleBgm, onToggleSfx }: ScorePanelProps) {
   return (
     <div className="flex flex-col gap-5 bg-slate-900/80 backdrop-blur-sm border border-violet-500/10 rounded-lg p-4 min-w-[100px]">
       <div>
@@ -54,7 +58,31 @@ export default function ScorePanel({ score, highScore, level, chain, totalCleare
         </div>
       )}
 
-      <div className="mt-auto pt-4 border-t border-slate-700/50">
+      <div className="mt-auto pt-4 border-t border-slate-700/50 flex flex-col gap-2">
+        <div className="flex gap-1">
+          <button
+            onClick={onToggleBgm}
+            title={bgmEnabled ? 'BGM ON' : 'BGM OFF'}
+            className={`flex-1 text-[9px] font-mono py-1 rounded border transition-colors ${
+              bgmEnabled
+                ? 'border-violet-500/40 text-violet-300 bg-violet-900/20'
+                : 'border-slate-700 text-slate-600 bg-transparent'
+            }`}
+          >
+            ♪ BGM
+          </button>
+          <button
+            onClick={onToggleSfx}
+            title={sfxEnabled ? 'SFX ON' : 'SFX OFF'}
+            className={`flex-1 text-[9px] font-mono py-1 rounded border transition-colors ${
+              sfxEnabled
+                ? 'border-violet-500/40 text-violet-300 bg-violet-900/20'
+                : 'border-slate-700 text-slate-600 bg-transparent'
+            }`}
+          >
+            ◈ SFX
+          </button>
+        </div>
         <p className="text-slate-600 text-[9px] font-mono leading-4">
           ←→ Move<br />
           ↑/Z Rotate R<br />

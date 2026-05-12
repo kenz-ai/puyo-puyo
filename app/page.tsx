@@ -1,6 +1,7 @@
 'use client';
 
 import { useGameLoop } from '@/hooks/useGameLoop';
+import { useAudio } from '@/hooks/useAudio';
 import GameBoard from '@/components/game/GameBoard';
 import NextPreview from '@/components/game/NextPreview';
 import ScorePanel from '@/components/game/ScorePanel';
@@ -10,11 +11,12 @@ import TouchControls from '@/components/game/TouchControls';
 
 export default function GamePage() {
   const { state, dispatch } = useGameLoop();
+  const { initAudio, bgmEnabled, sfxEnabled, toggleBgm, toggleSfx } = useAudio(state);
 
   const handlePause = () => dispatch({ type: 'TOGGLE_PAUSE' });
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 select-none">
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 select-none" onClick={initAudio}>
       {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-900/20 rounded-full blur-3xl" />
@@ -27,6 +29,10 @@ export default function GamePage() {
           level={state.level}
           chain={state.chain}
           totalCleared={state.totalCleared}
+          bgmEnabled={bgmEnabled}
+          sfxEnabled={sfxEnabled}
+          onToggleBgm={toggleBgm}
+          onToggleSfx={toggleSfx}
         />
 
         <div className="flex flex-col items-center gap-2">
