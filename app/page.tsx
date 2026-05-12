@@ -37,8 +37,24 @@ export default function GamePage() {
 
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center justify-between w-full px-1">
-            <p className="text-violet-300/60 text-[10px] font-mono tracking-[0.3em] uppercase">
-              Puyo Puyo
+            <p className="text-lg font-bold tracking-widest" aria-label="ぷよぷよ">
+              {'ぷよぷよ'.split('').map((char, i) => {
+                const colors = [
+                  'text-red-400 drop-shadow-[0_0_6px_#f87171]',
+                  'text-blue-400 drop-shadow-[0_0_6px_#60a5fa]',
+                  'text-green-400 drop-shadow-[0_0_6px_#4ade80]',
+                  'text-yellow-300 drop-shadow-[0_0_6px_#fde047]',
+                  'text-purple-400 drop-shadow-[0_0_6px_#c084fc]',
+                  'text-pink-400 drop-shadow-[0_0_6px_#f472b6]',
+                  'text-cyan-400 drop-shadow-[0_0_6px_#22d3ee]',
+                  'text-orange-400 drop-shadow-[0_0_6px_#fb923c]',
+                ];
+                return (
+                  <span key={i} className={colors[i % colors.length]}>
+                    {char}
+                  </span>
+                );
+              })}
             </p>
             {/* ポーズボタン（デスクトップ） */}
             <button
