@@ -1,11 +1,11 @@
 import type { Board, FallingPair, GameAction, GameState } from './types';
 import {
-  BOARD_COLS, BOARD_ROWS, CLEAR_ANIM_FRAMES, DROP_SETTLE_FRAMES,
+  CLEAR_ANIM_FRAMES, DROP_SETTLE_FRAMES,
   FALL_SPEEDS, LEVEL_UP_THRESHOLD, LOCK_DELAY_FRAMES,
   PUYO_COLORS, SPAWN_ORIENTATION, SPAWN_PIVOT,
 } from './constants';
 import {
-  applyGravity, calcSatellitePos, createEmptyBoard,
+  applyGravity, calcSatellitePos, canPlace, createEmptyBoard,
   getHardDropPosition, isGameOver, isLanded, lockPair,
   movePairDown, movePairLeft, movePairRight, rotatePairCCW, rotatePairCW,
 } from './board';
@@ -57,7 +57,7 @@ function spawnNext(state: GameState, board: Board): GameState {
   const newCurrent = state.nextPairs[0];
   const newNextPairs: [FallingPair, FallingPair] = [state.nextPairs[1], createNewPair()];
 
-  if (isGameOver(board)) {
+  if (isGameOver(board) || !canPlace(board, newCurrent.pivotPos, newCurrent.orientation)) {
     const highScore = Math.max(state.score, state.highScore);
     if (typeof window !== 'undefined') {
       localStorage.setItem('puyo-highscore', String(highScore));
@@ -175,8 +175,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       }
 
       if (state.phase === 'locking') {
+        if (!isLanded(state.board, state.currentPair)) {
+          return { ...state, phase: 'falling', fallTimer: 0 };
+        }
+
         const newLockTimer = state.lockTimer - 1;
-        if (newLockTimer > 0 && isLanded(state.board, state.currentPair)) {
+        if (newLockTimer > 0) {
           return { ...state, lockTimer: newLockTimer };
         }
 

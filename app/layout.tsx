@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Puyo Puyo",
-  description: "A modern browser-based Puyo Puyo game",
+  title: "kenz | AI Portfolio",
+  description: "Claude Code を使って一からプロダクトを構築するポートフォリオ",
 };
 
 export default function RootLayout({

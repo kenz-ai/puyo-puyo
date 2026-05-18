@@ -104,13 +104,11 @@ export function useAudio(state: GameState) {
       sfxLand(ctx, sfx);
     }
 
-    // Hard drop (skips locking → jumps directly to clearing)
-    if ((prev.phase === 'falling' || prev.phase === 'locking') && state.phase === 'clearing') {
+    // Hard drop (from falling - skips locking entirely)
+    // Natural lock or hard drop from locking phase
+    if (prev.phase === 'falling' && state.phase === 'clearing') {
       sfxHardDrop(ctx, sfx);
-    }
-
-    // Clear (after locking completes)
-    if (prev.phase === 'locking' && state.phase === 'clearing') {
+    } else if (prev.phase === 'locking' && state.phase === 'clearing') {
       sfxClear(ctx, sfx, Math.max(1, state.chain));
     }
 
