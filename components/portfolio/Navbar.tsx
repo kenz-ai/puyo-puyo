@@ -26,8 +26,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-        <span className="font-mono text-sm text-slate-400 tracking-widest">kenz</span>
+      <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-end">
         <nav className="flex items-center gap-6">
           {navLinks.map(({ label, href }) => (
             <a
