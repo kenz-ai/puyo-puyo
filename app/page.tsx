@@ -3,13 +3,15 @@ import Link from 'next/link';
 import Navbar from '@/components/portfolio/Navbar';
 import FadeIn from '@/components/portfolio/FadeIn';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 const projects = [
   {
     id: 'puyo-puyo',
     title: 'ぷよぷよ',
     description:
       'ブラウザで動くぷよぷよゲーム。連鎖・スコア計算・BGM/SE・ポーズ・タッチ操作を完全実装。Claude Code との対話のみで一から構築した。',
-    image: '/images/puyo-v2.png',
+    image: `${basePath}/images/puyo-v2.png`,
     tags: ['Next.js 16', 'TypeScript', 'React 19', 'Web Audio API', 'Tailwind CSS v4'],
     playHref: '/game',
     builtWith: 'Claude Code',
