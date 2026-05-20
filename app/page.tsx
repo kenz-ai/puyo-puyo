@@ -66,7 +66,7 @@ export default function PortfolioPage() {
             src={`${basePath}/images/hero.png`}
             alt=""
             fill
-            className="object-cover object-center"
+            className="object-cover object-top"
             priority
           />
           <div className="absolute inset-0 bg-[#0d1117]/75" />
