@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/portfolio/Navbar';
 import FadeIn from '@/components/portfolio/FadeIn';
@@ -58,7 +59,18 @@ export default function PortfolioPage() {
       </div>
 
       {/* ── Hero ── */}
-      <section className="relative z-10 min-h-screen flex flex-col justify-center px-6">
+      <section className="relative z-10 min-h-screen flex flex-col justify-center px-6 overflow-hidden">
+        {/* Background image + overlay */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src={`${basePath}/images/hero.png`}
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          <div className="absolute inset-0 bg-[#0d1117]/75" />
+        </div>
         <div className="max-w-4xl mx-auto w-full">
           <p className="text-xs font-mono text-violet-400 tracking-[0.3em] mb-6 uppercase">
             AI × Vibe Coding
