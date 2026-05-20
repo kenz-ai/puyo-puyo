@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/portfolio/Navbar';
 import FadeIn from '@/components/portfolio/FadeIn';
+import ScreenshotTimeline from '@/components/portfolio/ScreenshotTimeline';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
@@ -11,7 +11,20 @@ const projects = [
     title: 'ぷよぷよ',
     description:
       'ブラウザで動くぷよぷよゲーム。連鎖・スコア計算・BGM/SE・ポーズ・タッチ操作を完全実装。Claude Code との対話のみで一から構築した。',
-    image: `${basePath}/images/puyo-v2.png`,
+    screenshots: [
+      {
+        src: `${basePath}/images/puyo-v1.png`,
+        label: 'v1 · Prototype',
+        date: '2026.05.11',
+        caption: 'シンプルな円のぷよ',
+      },
+      {
+        src: `${basePath}/images/puyo-v2.png`,
+        label: 'v2 · Polished',
+        date: '2026.05.12',
+        caption: '絵文字フェイス + BGM/SE',
+      },
+    ],
     tags: ['Next.js 16', 'TypeScript', 'React 19', 'Web Audio API', 'Tailwind CSS v4'],
     playHref: '/game',
     builtWith: 'Claude Code',
@@ -100,53 +113,42 @@ export default function PortfolioPage() {
           <div className="grid gap-8">
             {projects.map((project, i) => (
               <FadeIn key={project.id} delay={i * 100}>
-                <article className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm overflow-hidden hover:border-slate-600 hover:bg-slate-900/60 transition-all duration-300">
-                  <div className="grid md:grid-cols-[5fr_7fr]">
-                    {/* Screenshot */}
-                    <div className="relative overflow-hidden bg-slate-950 min-h-[260px]">
-                      <Image
-                        src={project.image}
-                        alt={project.title + ' のスクリーンショット'}
-                        fill
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
-                        sizes="(max-width: 768px) 100vw, 420px"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-900/80 hidden md:block" />
-                    </div>
+                <article className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm overflow-hidden hover:border-slate-600 hover:bg-slate-900/60 transition-all duration-300 p-8 flex flex-col gap-6">
+                  {/* Badge row */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono text-violet-400 bg-violet-400/10 px-2 py-0.5 rounded border border-violet-400/20 tracking-widest">
+                      {project.builtWith}
+                    </span>
+                  </div>
 
-                    {/* Info */}
-                    <div className="p-8 flex flex-col justify-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-mono text-violet-400 bg-violet-400/10 px-2 py-0.5 rounded border border-violet-400/20 tracking-widest">
-                          {project.builtWith}
-                        </span>
-                      </div>
+                  {/* Screenshot timeline */}
+                  <ScreenshotTimeline screenshots={project.screenshots} />
 
-                      <div>
-                        <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed">{project.description}</p>
-                      </div>
+                  {/* Title + description */}
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{project.description}</p>
+                  </div>
 
-                      <div className="flex flex-wrap gap-1.5">
-                        {project.tags.map((tag, i) => (
-                          <span
-                            key={tag}
-                            className={`text-[11px] px-2 py-0.5 rounded border font-mono ${tagColors[i % tagColors.length]}`}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="pt-2">
-                        <Link
-                          href={project.playHref}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white text-sm rounded-lg font-medium transition-colors"
+                  {/* Tags + play button */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.map((tag, i) => (
+                        <span
+                          key={tag}
+                          className={`text-[11px] px-2 py-0.5 rounded border font-mono ${tagColors[i % tagColors.length]}`}
                         >
-                          <span>▶</span> プレイする
-                        </Link>
-                      </div>
+                          {tag}
+                        </span>
+                      ))}
                     </div>
+
+                    <Link
+                      href={project.playHref}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white text-sm rounded-lg font-medium transition-colors shrink-0"
+                    >
+                      <span>▶</span> プレイする
+                    </Link>
                   </div>
                 </article>
               </FadeIn>
