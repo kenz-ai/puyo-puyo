@@ -31,3 +31,7 @@ export const DAS_DELAY = 16;
 export const ARR_SPEED = 6;
 
 export const CELL_SIZE = 44;
+
+export const STORAGE_KEY_HIGHSCORE = 'puyo-highscore';
+export const STORAGE_KEY_BGM = 'puyo-bgm';
+export const STORAGE_KEY_SFX = 'puyo-sfx';

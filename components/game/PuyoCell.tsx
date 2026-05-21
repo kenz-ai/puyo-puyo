@@ -1,30 +1,13 @@
 import type { PuyoColor } from '@/lib/game/types';
+import { PUYO_COLOR_CLASSES, PUYO_GHOST_CLASSES } from './puyoColors';
 
-export type CellType = 'fixed' | 'falling' | 'ghost' | 'clearing' | 'empty';
+export type CellType = 'fixed' | 'falling' | 'ghost' | 'empty';
 
 interface PuyoCellProps {
   color: PuyoColor;
   cellType: CellType;
   isClearing?: boolean;
 }
-
-const COLOR_CLASSES: Record<NonNullable<Exclude<PuyoColor, null>>, string> = {
-  red:     'bg-red-500 shadow-[0_0_14px_#ef4444bb]',
-  blue:    'bg-blue-500 shadow-[0_0_14px_#3b82f6bb]',
-  green:   'bg-green-500 shadow-[0_0_14px_#22c55ebb]',
-  yellow:  'bg-yellow-400 shadow-[0_0_14px_#eab308bb]',
-  purple:  'bg-purple-500 shadow-[0_0_14px_#a855f7bb]',
-  garbage: 'bg-slate-400 shadow-[0_0_6px_#94a3b8aa]',
-};
-
-const GHOST_CLASSES: Record<NonNullable<Exclude<PuyoColor, null>>, string> = {
-  red:     'border-2 border-red-500/60',
-  blue:    'border-2 border-blue-500/60',
-  green:   'border-2 border-green-500/60',
-  yellow:  'border-2 border-yellow-400/60',
-  purple:  'border-2 border-purple-500/60',
-  garbage: 'border-2 border-slate-400/60',
-};
 
 function NormalFace() {
   return (
@@ -85,15 +68,21 @@ function GarbageFace() {
   );
 }
 
+const COLOR_LABEL: Record<string, string> = {
+  red: '赤', blue: '青', green: '緑', yellow: '黄', purple: '紫', garbage: 'おじゃま',
+};
+
 export default function PuyoCell({ color, cellType, isClearing }: PuyoCellProps) {
   if (!color || cellType === 'empty') {
-    return <div className="aspect-square" />;
+    return <div className="aspect-square" aria-hidden="true" />;
   }
+
+  const label = COLOR_LABEL[color] ?? color;
 
   if (cellType === 'ghost') {
     return (
-      <div className="aspect-square p-0.5">
-        <div className={`w-full h-full rounded-full opacity-40 ${GHOST_CLASSES[color]}`} />
+      <div className="aspect-square p-0.5" aria-hidden="true">
+        <div className={`w-full h-full rounded-full opacity-40 ${PUYO_GHOST_CLASSES[color]}`} />
       </div>
     );
   }
@@ -101,11 +90,15 @@ export default function PuyoCell({ color, cellType, isClearing }: PuyoCellProps)
   const isGarbage = color === 'garbage';
 
   return (
-    <div className="aspect-square p-0.5">
+    <div
+      className="aspect-square p-0.5"
+      role="img"
+      aria-label={isClearing ? `${label}ぷよ（消去中）` : `${label}ぷよ`}
+    >
       <div
         className={`
           w-full h-full rounded-full relative
-          ${COLOR_CLASSES[color]}
+          ${PUYO_COLOR_CLASSES[color]}
           ${isClearing ? 'animate-puyo-clear' : ''}
         `}
       >

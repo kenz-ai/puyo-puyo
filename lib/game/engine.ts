@@ -3,6 +3,7 @@ import {
   CLEAR_ANIM_FRAMES, DROP_SETTLE_FRAMES,
   FALL_SPEEDS, LEVEL_UP_THRESHOLD, LOCK_DELAY_FRAMES,
   PUYO_COLORS, SPAWN_ORIENTATION, SPAWN_PIVOT,
+  STORAGE_KEY_HIGHSCORE,
 } from './constants';
 import {
   applyGravity, calcSatellitePos, canPlace, createEmptyBoard,
@@ -29,7 +30,12 @@ export function createNewPair(): FallingPair {
 
 function loadHighScore(): number {
   if (typeof window === 'undefined') return 0;
-  return parseInt(localStorage.getItem('puyo-highscore') ?? '0', 10);
+  try {
+    const raw = parseInt(localStorage.getItem(STORAGE_KEY_HIGHSCORE) ?? '0', 10);
+    return isNaN(raw) || raw < 0 ? 0 : raw;
+  } catch {
+    return 0;
+  }
 }
 
 export function createInitialState(): GameState {
@@ -60,7 +66,7 @@ function spawnNext(state: GameState, board: Board): GameState {
   if (isGameOver(board) || !canPlace(board, newCurrent.pivotPos, newCurrent.orientation)) {
     const highScore = Math.max(state.score, state.highScore);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('puyo-highscore', String(highScore));
+      try { localStorage.setItem(STORAGE_KEY_HIGHSCORE, String(highScore)); } catch { /* noop */ }
     }
     return { ...state, board, phase: 'gameover', highScore };
   }

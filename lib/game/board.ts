@@ -88,10 +88,10 @@ export function isLanded(board: Board, pair: FallingPair): boolean {
 
 export function getHardDropPosition(board: Board, pair: FallingPair): { pivotPos: Position; satellitePos: Position } {
   let current = pair;
-  let next = movePairDown(board, current);
-  while (next !== null) {
+  for (let i = 0; i < BOARD_ROWS; i++) {
+    const next = movePairDown(board, current);
+    if (!next) break;
     current = next;
-    next = movePairDown(board, current);
   }
   return { pivotPos: current.pivotPos, satellitePos: current.satellitePos };
 }

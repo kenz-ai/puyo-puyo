@@ -7,15 +7,16 @@ import {
   sfxClear, sfxChain, sfxGameOver, sfxHardDrop,
   sfxLand, sfxLevelUp, sfxMove, sfxRotate,
 } from '@/lib/game/audio';
+import { STORAGE_KEY_BGM, STORAGE_KEY_SFX } from '@/lib/game/constants';
 
 export function useAudio(state: GameState) {
   const [bgmEnabled, setBgmEnabled] = useState<boolean>(() => {
     if (typeof window === 'undefined') return true;
-    return localStorage.getItem('puyo-bgm') !== 'false';
+    try { return localStorage.getItem(STORAGE_KEY_BGM) !== 'false'; } catch { return true; }
   });
   const [sfxEnabled, setSfxEnabled] = useState<boolean>(() => {
     if (typeof window === 'undefined') return true;
-    return localStorage.getItem('puyo-sfx') !== 'false';
+    try { return localStorage.getItem(STORAGE_KEY_SFX) !== 'false'; } catch { return true; }
   });
 
   const ctxRef = useRef<AudioContext | null>(null);
@@ -141,7 +142,7 @@ export function useAudio(state: GameState) {
   const toggleBgm = useCallback(() => {
     setBgmEnabled(prev => {
       const next = !prev;
-      localStorage.setItem('puyo-bgm', String(next));
+      try { localStorage.setItem(STORAGE_KEY_BGM, String(next)); } catch { /* noop */ }
       if (bgmPlayerRef.current) {
         if (next) bgmPlayerRef.current.start();
         else bgmPlayerRef.current.stop();
@@ -153,7 +154,7 @@ export function useAudio(state: GameState) {
   const toggleSfx = useCallback(() => {
     setSfxEnabled(prev => {
       const next = !prev;
-      localStorage.setItem('puyo-sfx', String(next));
+      try { localStorage.setItem(STORAGE_KEY_SFX, String(next)); } catch { /* noop */ }
       return next;
     });
   }, []);
