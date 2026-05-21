@@ -30,7 +30,12 @@ export function createNewPair(): FallingPair {
 
 function loadHighScore(): number {
   if (typeof window === 'undefined') return 0;
-  return parseInt(localStorage.getItem(STORAGE_KEY_HIGHSCORE) ?? '0', 10);
+  try {
+    const raw = parseInt(localStorage.getItem(STORAGE_KEY_HIGHSCORE) ?? '0', 10);
+    return isNaN(raw) || raw < 0 ? 0 : raw;
+  } catch {
+    return 0;
+  }
 }
 
 export function createInitialState(): GameState {
@@ -61,7 +66,7 @@ function spawnNext(state: GameState, board: Board): GameState {
   if (isGameOver(board) || !canPlace(board, newCurrent.pivotPos, newCurrent.orientation)) {
     const highScore = Math.max(state.score, state.highScore);
     if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY_HIGHSCORE, String(highScore));
+      try { localStorage.setItem(STORAGE_KEY_HIGHSCORE, String(highScore)); } catch { /* noop */ }
     }
     return { ...state, board, phase: 'gameover', highScore };
   }

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { Board, FallingPair, GamePhase, Position, PuyoColor } from '@/lib/game/types';
 import { BOARD_COLS, VISIBLE_ROWS } from '@/lib/game/constants';
 import { getHardDropPosition } from '@/lib/game/board';
@@ -70,7 +71,10 @@ interface GameBoardProps {
 }
 
 export default function GameBoard({ board, currentPair, clearingCells, phase }: GameBoardProps) {
-  const renderBoard = composeBoardForRender(board, currentPair, clearingCells, phase);
+  const renderBoard = useMemo(
+    () => composeBoardForRender(board, currentPair, clearingCells, phase),
+    [board, currentPair, clearingCells, phase],
+  );
 
   return (
     <div

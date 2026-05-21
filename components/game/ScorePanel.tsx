@@ -62,7 +62,8 @@ export default function ScorePanel({ score, highScore, level, chain, totalCleare
         <div className="flex gap-1">
           <button
             onClick={onToggleBgm}
-            title={bgmEnabled ? 'BGM ON' : 'BGM OFF'}
+            aria-label={bgmEnabled ? 'BGM ON' : 'BGM OFF'}
+            aria-pressed={bgmEnabled}
             className={`flex-1 text-[9px] font-mono py-1 rounded border transition-colors ${
               bgmEnabled
                 ? 'border-violet-500/40 text-violet-300 bg-violet-900/20'
@@ -73,7 +74,8 @@ export default function ScorePanel({ score, highScore, level, chain, totalCleare
           </button>
           <button
             onClick={onToggleSfx}
-            title={sfxEnabled ? 'SFX ON' : 'SFX OFF'}
+            aria-label={sfxEnabled ? 'SFX ON' : 'SFX OFF'}
+            aria-pressed={sfxEnabled}
             className={`flex-1 text-[9px] font-mono py-1 rounded border transition-colors ${
               sfxEnabled
                 ? 'border-violet-500/40 text-violet-300 bg-violet-900/20'

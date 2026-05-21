@@ -37,7 +37,7 @@ export default function GamePage() {
 
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center justify-between w-full px-1">
-            <p className="text-lg font-bold tracking-widest" aria-label="ぷよぷよ">
+            <h1 className="text-lg font-bold tracking-widest" aria-label="ぷよぷよ">
               {'ぷよぷよ'.split('').map((char, i) => {
                 const colors = [
                   'text-red-400 drop-shadow-[0_0_6px_#f87171]',
@@ -55,7 +55,7 @@ export default function GamePage() {
                   </span>
                 );
               })}
-            </p>
+            </h1>
             <button
               onClick={handlePause}
               className="hidden md:flex text-slate-500 hover:text-violet-300 transition-colors text-xs font-mono"
