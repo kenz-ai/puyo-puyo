@@ -74,6 +74,8 @@ export default function GameBoard({ board, currentPair, clearingCells, phase }: 
 
   return (
     <div
+      role="grid"
+      aria-label="ぷよぷよ盤面"
       className="border border-violet-500/20 rounded bg-slate-900/60"
       style={{
         display: 'grid',
