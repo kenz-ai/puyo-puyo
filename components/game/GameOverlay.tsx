@@ -13,7 +13,7 @@ export default function GameOverlay({ score, highScore, onRestart }: GameOverlay
       <div className="text-center font-mono">
         <p className="text-slate-400 text-xs uppercase tracking-widest">Score</p>
         <p className="text-white text-2xl font-bold">{score.toLocaleString()}</p>
-        {score >= highScore && score > 0 && (
+        {score > highScore && score > 0 && (
           <p className="text-yellow-400 text-xs mt-1">New High Score!</p>
         )}
       </div>

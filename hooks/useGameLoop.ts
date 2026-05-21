@@ -84,12 +84,6 @@ export function useGameLoop() {
         return;
       }
 
-      if (e.code === 'Space') {
-        e.preventDefault();
-        dispatch({ type: 'HARD_DROP' });
-        return;
-      }
-
       if (e.code === 'KeyP') {
         dispatch({ type: 'TOGGLE_PAUSE' });
         return;
