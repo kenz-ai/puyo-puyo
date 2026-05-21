@@ -1,4 +1,5 @@
 import type { FallingPair, PuyoColor } from '@/lib/game/types';
+import { PUYO_COLOR_CLASSES } from './puyoColors';
 
 interface MiniPuyoProps {
   color: PuyoColor;
@@ -8,19 +9,10 @@ interface MiniPuyoProps {
 function MiniPuyo({ color, size = 'lg' }: MiniPuyoProps) {
   if (!color) return <div className={size === 'lg' ? 'w-8 h-8' : 'w-5 h-5'} />;
 
-  const COLOR_MAP: Record<string, string> = {
-    red: 'bg-red-500 shadow-[0_0_10px_#ef4444bb]',
-    blue: 'bg-blue-500 shadow-[0_0_10px_#3b82f6bb]',
-    green: 'bg-green-500 shadow-[0_0_10px_#22c55ebb]',
-    yellow: 'bg-yellow-400 shadow-[0_0_10px_#eab308bb]',
-    purple: 'bg-purple-500 shadow-[0_0_10px_#a855f7bb]',
-    garbage: 'bg-slate-400',
-  };
-
   const sizeClass = size === 'lg' ? 'w-8 h-8' : 'w-5 h-5';
 
   return (
-    <div className={`${sizeClass} rounded-full relative ${COLOR_MAP[color] ?? ''}`}>
+    <div className={`${sizeClass} rounded-full relative ${PUYO_COLOR_CLASSES[color] ?? ''}`}>
       <div className="absolute top-0.5 left-1 w-1.5 h-1.5 rounded-full bg-white/50" />
     </div>
   );
